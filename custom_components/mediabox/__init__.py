@@ -8,7 +8,14 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import MediaboxApiClient
 from .const import CONF_ADDRESS, CONF_API_KEY, DOMAIN, PLATFORMS
+from .services import async_setup_services, async_unload_services
 from .sse_listener import MediaboxSseListener
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    """Set up the Mediabox domain (runs once, not per entry)."""
+    await async_setup_services(hass)
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -41,5 +48,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         ]
         await sse_listener.async_stop()
         hass.data[DOMAIN].pop(entry.entry_id)
+        async_unload_services(hass)
 
     return unload_ok
