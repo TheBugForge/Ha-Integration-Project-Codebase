@@ -1,1 +1,22 @@
-{}
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mediabox",
+        "description": "Set up a Mediabox device.",
+        "data": {
+          "address": "Address",
+          "api_key": "API Key",
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the Mediabox server. Verify the address and port.",
+      "invalid_auth": "Server reachable but the API key was rejected."
+    },
+    "abort": {
+      "already_configured": "This address is already configured."
+    }
+  }
+}
