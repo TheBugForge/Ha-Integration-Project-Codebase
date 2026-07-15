@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Windows test stubs (only needed locally for pytest-homeassistant-custom-component on win32)
+fcntl.py
+resource.py
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+venv/
+.venv/
+
+# Project planning docs (Obsidian vault, not code)
+Agents.md
+docs/
+
+# HA custom component state
+custom_components/mediabox/.translations/
