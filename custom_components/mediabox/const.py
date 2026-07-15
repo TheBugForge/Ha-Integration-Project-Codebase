@@ -8,4 +8,4 @@ CONF_ADDRESS = "address"
 CONF_API_KEY = "api_key"
 CONF_NAME = "name"
 
-PLATFORMS: list[Platform] = []
+PLATFORMS: list[Platform] = [Platform.SELECT]
