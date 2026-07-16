@@ -1,11 +1,12 @@
 {
   "domain": "mediabox",
   "name": "Mediabox",
-  "codeowners": [],
+  "codeowners": ["@TheBugForge"],
   "config_flow": true,
-  "documentation": null,
+  "documentation": "https://github.com/TheBugForge/Ha-Integration-Project-Codebase",
+  "issue_tracker": "https://github.com/TheBugForge/Ha-Integration-Project-Codebase/issues",
   "integration_type": "device",
   "iot_class": "local_push",
   "requirements": [],
-  "version": "0.0.1"
+  "version": "0.1.0"
 }
