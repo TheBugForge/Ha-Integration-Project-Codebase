@@ -10,7 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import CONF_ADDRESS, CONF_NAME, DOMAIN
+from .const import CONF_ADDRESS, CONF_NAME, DOMAIN, LAUNCHER_APP_NAME
 from .sse_listener import MediaboxSseListener
 
 
@@ -27,6 +27,12 @@ async def async_setup_entry(
 
     apps = await client.get_apps()
     options = [app["name"] for app in apps]
+    # GET /apps deliberately excludes the launcher (hidden from the box's own
+    # tile grid) — but it's still a real, always-switchable app, and the
+    # current-app SSE stream reports it whenever the box is at its home
+    # screen. Add it back so the entity can both display and select it.
+    if LAUNCHER_APP_NAME not in options:
+        options.append(LAUNCHER_APP_NAME)
 
     async_add_entities(
         [MediaboxAppSelect(entry, client, sse_listener, options)],

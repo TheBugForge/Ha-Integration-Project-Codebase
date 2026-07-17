@@ -20,24 +20,34 @@ async def async_setup_services(hass: HomeAssistant) -> None:
     """Register the send_key and send_action services (called once from async_setup)."""
 
     async def _handle_send_key(call: ServiceCall) -> None:
-        device_id: str = call.data["device_id"]
+        device_ids = call.data.get("device_id")
+        if not device_ids:
+            raise HomeAssistantError("send_key: no target device selected")
+        if isinstance(device_ids, str):
+            device_ids = [device_ids]
         key: str = call.data["key"]
-        entry_id = resolve_entry_id(hass, device_id)
-        client = hass.data[DOMAIN][entry_id]["api"]
-        try:
-            await client.send_key(key)
-        except (MediaboxApiError, MediaboxAuthError) as exc:
-            raise HomeAssistantError(str(exc)) from exc
+        for device_id in device_ids:
+            entry_id = resolve_entry_id(hass, device_id)
+            client = hass.data[DOMAIN][entry_id]["api"]
+            try:
+                await client.send_key(key)
+            except (MediaboxApiError, MediaboxAuthError) as exc:
+                raise HomeAssistantError(str(exc)) from exc
 
     async def _handle_send_action(call: ServiceCall) -> None:
-        device_id: str = call.data["device_id"]
+        device_ids = call.data.get("device_id")
+        if not device_ids:
+            raise HomeAssistantError("send_action: no target device selected")
+        if isinstance(device_ids, str):
+            device_ids = [device_ids]
         action: str = call.data["action"]
-        entry_id = resolve_entry_id(hass, device_id)
-        client = hass.data[DOMAIN][entry_id]["api"]
-        try:
-            await client.send_action(action)
-        except (MediaboxApiError, MediaboxAuthError) as exc:
-            raise HomeAssistantError(str(exc)) from exc
+        for device_id in device_ids:
+            entry_id = resolve_entry_id(hass, device_id)
+            client = hass.data[DOMAIN][entry_id]["api"]
+            try:
+                await client.send_action(action)
+            except (MediaboxApiError, MediaboxAuthError) as exc:
+                raise HomeAssistantError(str(exc)) from exc
 
     hass.services.async_register(DOMAIN, "send_key", _handle_send_key)
     hass.services.async_register(DOMAIN, "send_action", _handle_send_action)
